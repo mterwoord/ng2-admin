@@ -42,6 +42,18 @@ export class BaMenu {
         }
       }
     });
+
+    this._state.subscribe('menu.itemsChanged', a => this.menuItemsChanged(a));
+  }
+
+  private menuItemsChanged(a) {
+    console.log('menu items changed. Reload menu now');
+      
+    var xRoutes = this.menuRoutes;
+    var xMenuItems = this._service.convertRoutesToMenus(xRoutes);
+    this._state.notifyDataChanged("menu.buildItems", xMenuItems);
+
+    this.menuItems = xMenuItems;
   }
 
   public selectMenuAndNotify():void {

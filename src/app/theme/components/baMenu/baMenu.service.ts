@@ -1,19 +1,44 @@
 import {Injectable} from '@angular/core';
 import {Router, Routes} from '@angular/router';
+import { GlobalState } from '../../../global.state';
+
+export interface INgAdminMenuItem {
+    path: string;
+    children?: INgAdminMenuItem[];
+    data?: INgAdminMenuItemData;
+}
+
+export interface INgAdminMenuItemData {
+    menu: INgAdminMenuItemDataMenu
+}
+
+export interface INgAdminMenuItemDataMenu {
+    title: string;
+    icon?: string;
+    selected?: boolean;
+    expanded?: boolean;
+    order?: number;
+    url?: string;
+    target?: string;
+}
 
 @Injectable()
 export class BaMenuService {
 
   protected _currentMenuItem = {};
 
-  constructor(private _router:Router) {
+  constructor(private _router: Router, private _state: GlobalState) {
   }
-
-  public convertRoutesToMenus(routes:Routes):any[] {
+    
+  public convertRoutesToMenus(routes: Routes): INgAdminMenuItem[] {
     let items = this._convertArrayToItems(routes);
     return this._skipEmpty(items);
   }
-
+    
+  public refreshMenu(): void {
+    this._state.notifyDataChanged('menu.itemsChanged', null);
+  }
+    
   public getCurrentItem():any {
     return this._currentMenuItem;
   }
@@ -69,7 +94,7 @@ export class BaMenuService {
       // this is a menu object
       item = object.data.menu;
       item.route = object;
-      delete item.route.data.menu;
+      //delete item.route.data.menu;
     } else {
       item.route = object;
       item.skip = true;

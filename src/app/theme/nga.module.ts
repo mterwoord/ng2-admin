@@ -11,6 +11,8 @@ import {
   BaThemeConfigProvider
 } from './theme.configProvider';
 
+import { BaMenuService } from './components/baMenu/baMenu.service'
+
 import {
   BaAmChart,
   BaBackTop,
@@ -81,7 +83,8 @@ const NGA_PIPES = [
 const NGA_SERVICES = [
   BaImageLoaderService,
   BaThemePreloader,
-  BaThemeSpinner
+  BaThemeSpinner,
+  BaMenuService
 ];
 
 const NGA_VALIDATORS = [
